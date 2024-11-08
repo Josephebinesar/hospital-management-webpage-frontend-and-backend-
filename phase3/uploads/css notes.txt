@@ -1,0 +1,103 @@
+css
+
+css is a style sheet
+
+3 types of css
+#inline css
+#internal css
+#external css
+
+inline css:
+<h1 style="color:red: bg colur:">heading</h1>
+this is inline css
+
+internal css
+<style>
+h1{
+	color:blue
+	bg color: red 
+}
+p{
+color:black
+}
+</style>
+
+<h1>heasing</h1>
+<p>bdivwgigeafiudbgiu dsigub</p>
+*we are using div for cointainer
+
+
+#External css
+~create a separate file called style.css
+~ link that style.css to your 
+	<link rel="stylesheet" href="style.css"
+
+
+
+#css selectiors
+>element selector
+>class selector
+>id selector
+>universal selector
+
+
+element selector:
+	
+>class selector:[only one tag color will be changed](we should use . symbol)
+	giving class name eg:
+		#in html <h1 class="one">sam</h1>
+		#in css   .]y e(1fkone{
+				color:red;}
+	there can be n class as even in the same name
+
+
+>id selector: (we should use #):
+we cantor reuse the id again, eg id=two> two cannot be re used again; its like a roll no
+
+
+>universal selector:(we us symbol as *)
+	if we use it in the entire html tag
+
+
+
+
+CSS BOX MODEL:
+ box model is essentially a box that wraps around every html element
+  >margins
+  >borders
+  >padding
+  >content
+
+
+<style>
+h1{
+bg red;
+color black;
+>padding top:20px;[text and gap between the box on top]{when we add only padding then in 360 it will make a gap}
+>margin top 20px;[gap between the top and padding]
+>border color red;(we should add width and style)
+}</style>
+<h1>hello</h1>
+
+
++ text Alline used to Alline the text
+
+
+
+DISPLAY PROPERTY
+>inline
+>inline block
+>block
+>none
+
+SPAN-{html} when we use span we get only need amount of background eg: when i write green (background color will only apply in the background of green{it give only for the available text})
+
+BLOCK-it will take the entire screen eg: #css:{display: block}
+INLINE-work same aslike spam eg:#css:(display:inline)
+INLINE BLOCK: we can add width and height {eg:display:inline-block}
+
+
+
+#NAV TAG - it is a cointainer
+
+#hover-when we touch the particular item it change its color eg:li:hover{color:red}

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Test Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .role-selection {
+            margin-bottom: 30px;
+        }
+
+        .role-selection label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .role-selection select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .login-form {
+            display: none;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-form button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Sections for each role */
+        .admin-section, .doctor-section, .patient-section {
+            display: none; /* Hide all by default */
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        /* Drag-and-Drop upload area for admin */
+        .upload-area {
+            width: 100%;
+            padding: 20px;
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+            transition: background-color 0.3s;
+        }
+
+        .upload-area:hover {
+            background-color: #e9f5ff;
+        }
+
+        /* Report review input for doctor */
+        .doctor-review {
+            margin-top: 20px;
+        }
+
+        .doctor-review textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        /* Patient report section */
+        .patient-reports {
+            margin-top: 20px;
+        }
+
+        .patient-reports ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        /* File list display */
+        .file-list {
+            margin-top: 10px;
+        }
+
+        .file-list li {
+            background: #e2e2e2;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Lab Test Portal</h1>
+    
+    <!-- Role Selection Section -->
+    <div class="role-selection">
+        <label for="role">Select your role:</label>
+        <select id="role" onchange="showLoginForm()">
+            <option value="" disabled selected>Choose a role</option>
+            <option value="admin">Admin</option>
+            <option value="doctor">Doctor</option>
+            <option value="patient">Patient</option>
+        </select>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-form" id="login-form">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="button" onclick="login()">Login</button>
+        <p id="role-text"></p>
+    </div>
+
+    <!-- Admin Section -->
+    <div class="admin-section" id="admin-section">
+        <h2>Admin Upload</h2>
+        <div class="upload-area" id="uploadArea" ondragover="event.preventDefault()" ondrop="dropFiles(event)">
+            Drag and drop files here to upload
+        </div>
+        <div class="upload-input">
+            <input type="file" id="fileUpload" multiple style="display:none;" onchange="handleFiles(this.files)">
+            <button onclick="document.getElementById('fileUpload').click()">Select Files</button>
+        </div>
+    </div>
+
+    <!-- Doctor Section -->
+    <div class="doctor-section" id="doctor-section">
+        <h2>Doctor Review</h2>
+        <div class="doctor-review">
+            <textarea id="doctorReport" placeholder="Review the report and suggest medicines..."></textarea>
+            <button onclick="submitReport()">Submit Report</button>
+        </div>
+    </div>
+
+    <!-- Patient Section -->
+    <div class="patient-section" id="patient-section">
+        <h2>Your Reports</h2>
+        <div class="patient-reports">
+            <ul id="reportList">
+                <!-- Dynamically added files will appear here -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    let uploadedFiles = [];
+
+    // Function to show login form based on role selection
+    function showLoginForm() {
+        const role = document.getElementById('role').value;
+        const loginForm = document.getElementById('login-form');
+        const roleText = document.getElementById('role-text');
+
+        loginForm.style.display = 'flex'; // Show the login form
+        roleText.textContent = You are logging in as a ${role.charAt(0).toUpperCase() + role.slice(1)};
+    }
+
+    // Simple login functionality
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('role').value;
+        
+        if (username && password) {
+            alert(Logged in as ${role.charAt(0).toUpperCase() + role.slice(1)}!);
+            document.getElementById('login-form').style.display = 'none';
+
+            // Hide all sections first
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('doctor-section').style.display = 'none';
+            document.getElementById('patient-section').style.display = 'none';
+
+            // Show relevant section based on role
+            if (role === 'admin') {
+                document.getElementById('admin-section').style.display = 'block';
+            } else if (role === 'doctor') {
+                document.getElementById('doctor-section').style.display = 'block';
+            } else if (role === 'patient') {
+                document.getElementById('patient-section').style.display = 'block';
+                displayReports(); // Show reports for patient
+            }
+        } else {
+            alert('Please enter valid login credentials.');
+        }
+    }
+
+    // Handle file selection
+    function handleFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+            uploadedFiles.push(files[i]);
+            alert(File ${files[i].name} uploaded successfully!);
+        }
+        displayReports(); // Refresh the report list for patients
+    }
+
+    // Drag and drop functionality
+    function dropFiles(event) {
+        event.preventDefault();
+        const files = event.dataTransfer.files;
+        handleFiles(files); // Handle dropped files
+    }
+
+    // Function to display uploaded files for patients
+    function displayReports() {
+        const reportList = document.getElementById('reportList');
+        reportList.innerHTML = ''; // Clear previous list
+        
+        uploadedFiles.forEach(file => {
+            const li = document.createElement('li');
+            li.textContent = file.name;
+            reportList.appendChild(li);
+        });
+    }
+
+    // Function to submit report for doctor
+    function submitReport() {
+        const reportText = document.getElementById('doctorReport').value;
+
+        if (!reportText) {
+            alert('Please provide a report review.');
+            return;
+        }
+
+        alert('Report submitted successfully!');
+        document.getElementById('doctorReport').value = ''; // Clear the textarea
+    }
+</script>
+
+</body>
+</html>
